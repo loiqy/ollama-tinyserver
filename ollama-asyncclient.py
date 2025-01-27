@@ -82,7 +82,11 @@ class OLLAMA(LLM):
                 "role": "system",
                 "content": input["system_prompt"]
             })
-        content =[{"type": "text", "text": input["query"]}]
+        messages.append({
+            "role": "user",
+            "content": input["query"]
+        })
+        # content =[{"type": "text", "text": input["query"]}]
         
         if input.get('image'): #image should be a list of base64 encoded images
             raise ValueError("image is not supported in this model")
@@ -96,7 +100,7 @@ class OLLAMA(LLM):
                             }
                         }
                     )
-        messages.append({"role": "user", "content": content})
+        # messages.append({"role": "user", "content": content})
         
         return messages
     
@@ -104,6 +108,15 @@ if __name__ == "__main__":
     model_name = "deepseek-r1:32b"
     api_keys = "http://localhost:11434/api/chat"
     ollama = OLLAMA(model_name, api_keys)
+
+    # Test sync
+    input = {
+        "query": "What is the capital of France?"
+    }
+    response = ollama.predict(input)
+    print(response)
+
+    # Test async
     inputs = [
         {
             "query": "What is the capital of France?"
