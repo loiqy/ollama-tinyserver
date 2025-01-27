@@ -70,7 +70,9 @@ class OLLAMA(LLM):
         async with aiohttp.ClientSession() as session:
             async with session.post(self.api_keys, json=data) as response:
                 content = await response.json()
-                return content['message']['content']
+                print(content)
+                print(type(content))
+                return content
 
     def messages(self, input: LLM_input) -> List[dict]:
         
