@@ -1,17 +1,16 @@
 import requests
 
-url = "http://localhost:11434/api/generate"
+url = "http://localhost:11434/api/chat"
 data = {
     "model": "deepseek-r1:32b",
-    "prompt": "Why is the sky blue?"
+    "messages": [
+        {
+            "role": "user",
+            "content": "What is the capital of France?"
+        }
+    ],
+    "stream": False
 }
 
-response = requests.post(url, json=data, stream=True)
-full_response = ""
-
-for line in response.iter_lines():
-    if line:
-        decoded_line = line.decode("utf-8")
-        full_response += decoded_line + "\n"
-
-print(full_response)
+response = requests.post(url, json=data)
+print(response.json())
